@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block title %}
+Medicine Billing
+{% endblock %}
+
+{% block main %}
+<h1>Booking Confiremed for </h1> 
+<p>Medicine Name: {{ most_recent_medicine_history.medicine.name }}</p>
+<p>Medicine Type: {{ most_recent_medicine_history.medicine.type }}</p>
+<p>Medicine Price: {{ most_recent_medicine_history.medicine.price }}</p>
+<p>Medicine Description: {{ most_recent_medicine_history.medicine.description }}</p>
+{% endblock %}

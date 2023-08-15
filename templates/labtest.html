@@ -1,0 +1,124 @@
+{% extends "layout.html" %}
+{% block title %}
+Lab Test
+{% endblock %}
+
+{% block main %}
+<style>
+  .med-list{
+    padding:none;
+    list-style: none;
+  }
+  .med-item{
+  border: 1px solid black;
+    padding: 5px 10px 5px 10px; 
+    width:70%;
+    margin: 25px;
+    font-size:1em;
+    background-color: #f9f9f9;
+  }
+    .buy-button
+  {
+    width: 105px;
+    height: 40px;
+    background: #162938;
+    border:none;
+    outline:none;
+    border-radius: 6px;
+    color:white;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    position: relative;
+    left:20%;
+    bottom:20px;
+  }
+  .btn1{
+    width: 105px;
+    height: 35px;
+    background: #162938;
+    border:none;
+    outline:none;
+    border-radius: 6px;
+    color:white;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    padding: 0;
+  }
+  .btn{
+    width: 105px;
+    height: 30px;
+    background: #162938;
+    border:none;
+    outline:none;
+    border-radius: 6px;
+    color:white;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    padding: 0;
+  }
+  </style>
+
+<form method="GET" action="/labs">
+  <label for="search">Search Lab Tests:</label>
+  <input type="text" id="search" name="search" value="{{ search_term }}">
+  <button type="submit" class="btn1">Search</button>
+</form>
+
+<h2>Filter Options:</h2>
+<form method="GET" action="/labs">
+  <label for="cost_filter">Filter by Cost:</label>
+  <select id="cost_filter" name="cost_filter">
+    <option value="all">All</option>
+    <option value="0-100" {% if cost_filter == "0-100" %}selected{% endif %}>$0 - $100</option>
+    <option value="101-200" {% if cost_filter == "101-200" %}selected{% endif %}>$101 - $200</option>
+    <option value="201-300" {% if cost_filter == "201-300" %}selected{% endif %}>$201 - $300</option>
+  </select>
+  
+  <label for="rating_filter">Filter by Rating:</label>
+  <select id="rating_filter" name="rating_filter">
+    <option value="all">All</option>
+    <option value="3" {% if rating_filter == "3" %}selected{% endif %}>3 stars and above</option>
+    <option value="4" {% if rating_filter == "4" %}selected{% endif %}>4 stars and above</option>
+    <option value="5" {% if rating_filter == "5" %}selected{% endif %}>5 stars</option>
+  </select>
+  
+  <button type="submit" class="btn">Apply Filters</button>
+</form>
+
+<h2>Available Lab Tests</h2>
+<ul class="med-list">
+  {% for lab_test in lab_tests %}
+    <li class="med-item">
+      <strong>{{ lab_test.testname }}</strong> (Company: {{ lab_test.companyname }})<br>
+      Availability: {{ lab_test.availability }}<br>
+      Rating: {{ lab_test.ratings }} stars<br>
+      Cost: ${{ lab_test.cost }}<br>
+      <form method="POST" action="/labs">
+        <input type="hidden" name="labtest" value="{{ lab_test.id }}">
+        <label for="date">Select Date:</label>
+        <input type="date" id="date" name="date" required>
+        <label for="time">Select Time:</label>
+        <input type="time" id="time" name="time" required>
+        <button type="submit" class="buy-button">Buy</button>
+      </form>
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const buyButtons = document.querySelectorAll('.buy-button');
+    
+    buyButtons.forEach(button => {
+      button.addEventListener('click', event => {
+        event.preventDefault();
+        const form = event.target.closest('form');
+        form.submit();
+      });
+    });
+  });
+</script>

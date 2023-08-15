@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% block title %}
+Voice Assitance
+{% endblock %}
+
+{% block main %}
+
+<audio controls hidden controls autoplay>
+    <source src="{{ audio_url }}" type="audio/mp3">
+</audio>
+<div class="container">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+    <div class="left">
+        <h1>Chatbot</h1>
+        <div id="chatbox"></div>
+        <form id="chat-form" action="/submit" method="post">
+            <input type="text" name="user_input" placeholder="Enter your message" autocomplete="off" required>
+            <button type="submit">Send</button>
+        </form>
+        <a href="/clear">Clear Conversation</a> <!-- Add a link/button to clear conversation -->
+        <audio controls id="voice-response" hidden> <!-- Add an id attribute for JavaScript control -->
+            Your browser does not support the audio element.
+        </audio>
+        <script>
+            const chatBox = document.getElementById('chatbox');
+            const chatForm = document.getElementById('chat-form');
+            const voiceResponse = document.getElementById('voice-response');
+    
+            chatForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+                const userMessage = event.target.querySelector('[name="user_input"]').value;
+                fetch('/submit', {
+                    method: 'POST',
+                    body: new URLSearchParams({ user_input: userMessage }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    chatBox.innerHTML = data.conversation.map(([role, text]) => `
+                        <div class="${role}">
+                            <p>${text}</p>
+                        </div>
+                    `).join('');
+                    
+                    // Update the audio source and play the response from Base64 data
+                    voiceResponse.src = `data:audio/mpeg;base64,${data.audio_data}`;
+                    voiceResponse.play();
+                });
+            });
+        </script>
+    </div>
+</div>
+    
+{% endblock %}
+

@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+{% block title %}
+Book Appointment
+{% endblock %}
+{% block main %}
+<style>
+      .med-item{
+    border: 1px solid black;
+    padding: 5px 10px 5px 10px; 
+    width:70%;
+    margin: 25px;
+    font-size:1em;
+    background-color: #f9f9f9;
+    gap:20px;
+  }
+  .mid{
+    list-style: none;
+  }
+ button{
+
+    width: fit-content;
+    height: 40px;
+    background: #162938;
+    color:white;
+    font-size: 1em;
+    border-radius: 6px;
+    margin-bottom: 10px;
+ }
+ .btn{
+
+    width: fit-content;
+    height: 40px;
+    background: #162938;
+    color:white;
+    font-size: 1em;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    position: relative;
+    left:10%;
+    
+ }
+</style>
+    <h1>Book an Appointment</h1>
+
+    <form method="GET" action="/appointment">
+        <label for="search">Search by Name:</label>
+        <input type="text" id="search" name="search" placeholder="Search by name...">
+        <br><br>
+        <label for="speciality">Filter by Specialty:</label>
+        <select name="speciality" id="speciality">
+            <option value="">All</option>
+            {% for specialty in unique_specialties %}
+                <option value="{{ specialty[0] }}">{{ specialty[0] }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <button type="submit">Search</button>
+    </form>
+
+    <h2>Available Doctors</h2>
+    <ul class='mid'>
+        {% for doctor in doctors %}
+            <li class="med-item">
+                <strong>{{ doctor.name }}</strong> (Specialty: {{ doctor.speciality }}) <br>
+                Rating: {{ doctor.rating }} <br>
+                Availability: {{ doctor.available }} <br>
+                Cost: ${{ doctor.cost }} <br>
+                <form method="POST" action="/appointment">
+                    <input type="hidden" name="doctor" value="{{ doctor.id }}">
+                    <label for="date">Select Date:</label>
+                    <input type="date" id="date" name="date" required>
+                    <label for="time">Select Time:</label>
+                    <input type="time" id="time" name="time" required>
+                    <button type="submit" class="btn">Book Appointment</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

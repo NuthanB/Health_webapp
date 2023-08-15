@@ -1,0 +1,92 @@
+{% extends "layout.html" %}
+{% block title %}
+Disease Analysis
+{% endblock %}
+
+{% block main %}
+<style>
+    hr{
+        border: 1px solid
+    }
+</style>
+    <h1>Disease Analysis</h1>
+    <canvas id="diseaseChart"></canvas>
+    <br>
+    <hr>
+    <br>
+   
+    <h3>Malaria</h3>
+    <p>Malaria is a life-threatening disease caused by Plasmodium parasites transmitted through infected Anopheles mosquitoes. It infects red blood cells, leading to symptoms like fever, chills, and anemia.</p>
+    <h4>Ways to prevent</h4>
+    <ul>
+        <li>Use Insect Repellents containing DEET, picaridin, or other recommended ingredients to exposed skin and clothing.</li>
+        <li>Eliminate Mosquito Breeding Sites.</li>
+        <li>Use Window and Door Screens.</li>
+        <li> Stay Hydrated.</li>
+        <li>Rest your body to recover and fight the infection.</li>
+        <li>Maintain a balanced diet.</li>
+        </ul><br> <hr> <br>
+    <h3>Dengue</h3>
+    <p> Dengue is a viral infection transmitted primarily by Aedes mosquitoes. It can cause a wide range of symptoms, from mild flu-like illness to severe dengue, which can lead to potentially life-threatening complications.</p>
+    <h4>Ways to prevent</h4>
+        <ul>
+            <li>Use Mosquito Repellents containing DEET, picaridin, or other recommended ingredients to exposed skin and clothing.</li>
+            <li>Wear Protective Clothing</li>
+            <li>Use Window and Door Screens.</li>
+            <li> Cover Water Storage</li>
+            <li>Keep Gutters Clean</li>
+            <li>Dispose of Trash Properly.</li>
+            </ul><br> <hr><br>
+    <h3>Hypertenson</h3>
+    <p>Hypertension, also known as high blood pressure, is a medical condition characterized by consistently elevated arterial blood pressure, often exceeding 130/80 mmHg, which can strain the heart and lead to increased risk of cardiovascular diseases if left untreated.</p>
+    <h4>Ways to prevent</h4>
+            <ul>
+                <li>Maintain a Healthy Diet</li>
+                <li>Maintain a Healthy Weight</li>
+                <li>Engage in Regular Physical Activity</li>
+                <li>Reduce Stress</li>
+                <li>Limit Caffeine Intake</li>
+                <li>Regular Health Checkups</li>
+            </ul>   <br> <hr><br>             
+    <h3>Diabetes</h3>
+    <p> Diabetes is a metabolic disorder marked by elevated blood glucose levels due to inadequate insulin secretion (Type 1) or impaired insulin action (Type 2), often leading to hyperglycemia and potentially causing various systemic complications.</p>
+    <h4>Ways to prevent</h4>
+            <ul>
+                <li>Ways to prevent diabetes</li>  
+                 <li>Maintain a Healthy Weight</li>
+                 <li>Eat a Balanced Diet</li>
+                 <li>Get Enough Sleep</li>
+                 <li>Stay Hydrated</li>
+                 <li>Manage Stress</li>
+                 <li>Stay active (perform regular exercise)</li>
+            </ul>        
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var diseases = {{ diseases|tojson }};
+        var diseaseNames = diseases.map(item => item.disease);
+        var diseaseCounts = diseases.map(item => item.count);
+    
+        var ctx = document.getElementById('diseaseChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: diseaseNames,
+                datasets: [{
+                    label: 'Disease Count',
+                    data: diseaseCounts,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>    
+    
+{% endblock %}

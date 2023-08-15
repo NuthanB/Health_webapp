@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block title %}
+ Confirmed
+{% endblock %}
+{% block main %}
+<h1> Booking confirmed</h1>
+<h3>Details-</h3>
+    <p><strong>Test Name:</strong> {{ most_recent_lab_history.labtest.testname }}</p>
+    <p><strong>Company Name:</strong> {{ most_recent_lab_history.labtest.companyname }}</p>
+    <p><strong>Availability:</strong> {{ most_recent_lab_history.labtest.availability }}</p>
+    <p><strong>Ratings:</strong> {{ most_recent_lab_history.labtest.ratings }}</p>
+    <p><strong>Cost:</strong> {{ most_recent_lab_history.labtest.cost }}</p>
+{% endblock %}

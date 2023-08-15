@@ -1,0 +1,137 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en"></html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/layout.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+    <title>{% block title %}{% endblock %}</title>
+    <!-- Include your CSS and other metadata here -->
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#"><img src = "static/styles/logo.jpeg" height="75px" width="75px"></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link " aria-current="page" href="/">Home</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Labs
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/lab">Labs</a></li>
+                  <li><a class="dropdown-item" href="/labs">Book Test</a></li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="/medicine">Medicine</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " aria-current="page" href="/appointment">Appointment</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Awareness
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/awareness">Instruments</a></li>
+                  <li><a class="dropdown-item" href="/knowaround">Know Around</a></li>
+                 
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Insurance
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/compaines"> Insurance Compaines </a></li>
+                  <li><a class="dropdown-item" href="/documents">Documents</a></li>
+                </ul>
+              </li>
+              <li class="nav-item ">
+               <!-- <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Sleep Assitance 
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/kids">Kids Mode </a></li>
+                  <li><a class="dropdown-item" href="/adults">Normal Mode</a></li>
+                </ul>
+              -->
+              <a class="nav-link" aria-current="page" href="/adults">Sleep Assistance</a>
+              </li>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Services
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/bmi_calculator">BMI </a></li>
+                </ul>
+              </li>
+            </ul>
+            {% if session.user_id %}
+            <ul class="navbar-nav ml-auto mt-2">
+              <li class="nav-item"><a class="nav-link" href="/profile">Profile</a></li>
+              <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
+          </ul>
+          {% else %}
+                    <ul class="navbar-nav ml-auto mt-2">
+                        <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
+                    </ul>
+                {% endif %}
+          </div>
+        </div>
+      </nav>
+
+      <main class="container p-5">
+        
+        {% block main %}{% endblock %}
+    </main>
+    <!-- Footer -->
+    
+    <footer>
+      <hr >
+        <div class="footer-basic">
+            <footer>
+                <div class="social"><a href="#"><i class="icon ion-social-linkedin"></i></a><a href="#"><i class="icon ion-social-instagram"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-facebook"></i></a></div>
+                <ul class="list-inline">
+                    <li class="list-inline-item"><a href="#">Home</a></li>
+                    <li class="list-inline-item"><a href="#">Services</a></li>
+                    <li class="list-inline-item"><a href="#">About</a></li>
+                    <li class="list-inline-item"><a href="#">Terms</a></li>
+                    <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
+                </ul>
+                <p class="copyright">Health+</p>
+                <p class="copyright">THIS IS MADE FOR EDUCATIONAL PURPOSE ONLY</p>
+            </footer>
+        </div>
+    </footer>
+    <div class="voice-icon" id="voiceIcon">
+      <a href="/assitance"><i class="fas fa-microphone"></i></a>
+  </div>
+</body>
+</html>
+    <style>
+    .voice-icon {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      font-size: 24px;
+      cursor: pointer;
+  }
+  
+</style>

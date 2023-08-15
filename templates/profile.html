@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+{% block title %}
+profile
+{% endblock %}
+
+{% block main %}
+<style>
+  h1{
+    text-align: center;
+  }
+  p{
+    text-align: center;
+  }
+  
+  .start{
+    max-width: 600px;
+    margin: 50px auto;
+    color:black;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    position:relative;
+    right:240px;
+    margin-bottom:10px;
+  }
+  li{
+    list-style: none;
+  }
+  
+  </style>
+
+<h1>Welcome, {{ user.username }}!</h1>
+<h2>Here are your details:</h2>
+<div class="start">
+<ul>
+  <li>Name: {{ user.username }}</li>
+  <li>Age: {{ user.age }}</li>
+  <li>Phone Number: {{ user.phone }}</li>
+  <li>Blood Group: {{ user.blood }}</li>
+  <li>Disease: {{ user.disease }}</li>
+  <!-- Add more details as needed -->
+</ul>
+</div>
+<h2>Your Documents:</h2>
+<div class="start">
+<ul>
+  {% for document in documents %}
+    <li>{{ document.title }}</li>
+  {% endfor %}
+</ul>
+</div>
+
+<h2>Your Appointments:</h2>
+<div class="start">
+<ul>
+  {% for appointment in appointments %}
+    <li>Doctor: {{ appointment.doctor.name }}</li>
+    <li>Date: {{ appointment.appointment_date }}</li>
+    <li>Time: {{ appointment.appointment_time }}</li>
+  {% endfor %}
+</ul>
+</div>
+<h2>Your Lab Tests:</h2>
+<div class="start">
+<ul>
+  {% for lab_test in lab_tests %}
+    <li>{{ lab_test.labtest.testname }}</li>
+  {% endfor %}
+</ul>
+</div>
+<h2>Your Medicines:</h2>
+<div class="start">
+<ul>
+  {% for medicine in medicines %}
+    <li>{{ medicine.medicine.name }}</li>
+  {% endfor %}
+</ul>
+{% endblock %}
+</div>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/register.css') }}">
+</head>
+<body>
+    <div class="wrapper">
+        <span class="icon-close">
+            <ion-icon name="close-outline"></ion-icon>
+        </span>
+        <div class="form-box login">
+            <h2>Register</h2>
+    <form method="POST" action="/register">
+
+         <div class="input-box">
+            <span class="icon"><ion-icon name="person"></ion-icon></span>
+            <input type="text" id="username" name="username" required>
+            <label>Username</label>
+        </div>
+        <div class="input-box">
+            <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+            <input type="password" id="password" name="password" required>
+            <label>Password</label>
+        </div>
+        <div class="input-box">
+            <span class="icon"><ion-icon name="mail"></ion-icon></span>
+            <input type="email" id="email" name="email" required>
+            <label>Email</label>
+        </div>
+        <div class="input-box">
+            <span class="icon"><ion-icon name="call"></ion-icon></span>
+            <input type="text" id="phone" name="phone" required>
+            <label>Phone:</label>
+        </div>
+        <div class="input-box1">
+            <label>Gender:</label>
+            <select id="gen" name="gen">
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+                <option value="O">Others</option>
+            </select>
+        </div>
+        <div class="input-box">
+            DOB:<input type="date" id="dob" name="dob" required>
+        </div>
+        <label>Address:</label>
+        <textarea id="address" cols="25" rows="3" name="address" required></textarea>
+        <div class="input-box">
+            <span class="icon"><ion-icon name="flame"></ion-icon></span>
+            <input type="text" id="blood" name="blood" required>
+            <label>Blood group</label>
+        </div>
+        <div class="input-box">
+            <input type="text" id="disease" name="disease" required>
+            <label>Health Issues</label>
+        </div>
+        <br><br>
+    
+        <button type="submit" class="btn">Register</button>
+
+    </form>
+</body>
+</html>
+<script ></script>  
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>    

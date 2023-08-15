@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block title %}
+Labs
+{% endblock %}
+
+{% block main %}
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/labs.css') }}">
+<div class="container">
+  <div class="card" style="width: 18rem;">
+      <img src="/static/styles/lab1.jpeg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">LabTech Diagnostics</h5>
+          <p class="card-text">LabTech Diagnostics: Your reliable partner for accurate and timely medical testing, delivering results you can trust</p>
+          <a href="#" class="btn btn-primary">Know More</a>
+        </div>
+  </div>
+  <div class="card" style="width: 18rem;">
+    <img src="/static/styles/lab2.jpeg" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">BioScan Laboratories</h5>
+      <p class="card-text">LabTech Diagnostics: Your reliable partner for accurate and timely medical testing, delivering results you can trust</p>
+      <a href="#" class="btn btn-primary">Know More</a>
+    </div>
+  </div>
+  <div class="card" style="width: 18rem;">
+    <img src="/static/styles/lab3.jpeg" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">HealthCheck Labs</h5>
+      <p class="card-text">LabTech Diagnostics: Your reliable partner for accurate and timely medical testing, delivering results you can trust</p>
+      <a href="#" class="btn btn-primary">Know More</a>
+    </div>
+  </div>
+  </div>
+  
+</div>
+  
+
+  {% endblock %}

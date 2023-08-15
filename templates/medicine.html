@@ -1,0 +1,110 @@
+{% extends "layout.html" %}
+{% block title %}
+Medicine
+{% endblock %}
+
+{% block main %}
+<style>
+  .med-list{
+    padding:none;
+    list-style: none;
+  }
+  .med-item{
+  border: 1px solid black;
+    padding: 5px 10px 5px 10px; 
+    width:70%;
+    margin: 25px;
+    font-size:1em;
+    background-color: #f9f9f9;
+  }
+  .btn
+  {
+    width: 105px;
+    height: 40px;
+    background: #162938;
+    border:none;
+    outline:none;
+    border-radius: 6px;
+    color:white;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    position: relative;
+    left:80%;
+    bottom:15px;
+    
+  }
+  .btn1{
+    width: 105px;
+    height: 30px;
+    background: #162938;
+    border:none;
+    outline:none;
+    border-radius: 6px;
+    color:white;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+
+  }
+  .btn2{
+    width: 105px;
+    height: 35px;
+    background: #162938;
+    border:none;
+    outline:none;
+    border-radius: 6px;
+    color:white;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    position:relative;
+    left:25px;
+    margin-bottom: 10px;
+
+
+  }
+  </style>
+<h1>Buy Medicine</h1>
+  
+  <form method="GET" action="/medicine">
+    <label for="search">Search Medicine:</label>
+    <input type="text" id="search" name="search" value="{{ search_term }}">
+    <button type="submit" class="btn1">Search</button>
+  </form>
+  
+  <form method="GET" action="/medicine">
+    <label for="cost_filter">Filter by Cost:</label>
+    <select id="cost_filter" name="cost_filter">
+      <option value="asc">Low to High</option>
+      <option value="desc">High to Low</option>
+    </select>
+    <button type="submit"class="btn2">Apply Filter</button>
+  </form>
+  
+  <form method="GET" action="/medicine">
+    <label for="type_filter">Filter by Type:</label>
+    <select id="type_filter" name="type_filter">
+      <option value="Private">Private</option>
+      <option value="Government">Government</option>
+    </select>
+    <button type="submit" class="btn2">Apply Filter</button>
+  </form>
+  
+  <h2>Available Medicines</h2>
+  <ul class="med-list">
+    {% for medicine in medicines %}
+      <li class="med-item">
+        {{ medicine.name }} - {{ medicine.type }} - Cost: {{ medicine.price }} - Rating: {{ medicine.rating }}
+        {% if medicine.side_effects %}
+          <br>Side Effects: {{ medicine.side_effects }}
+        {% endif %}
+        <form method="POST" action="/medicine">
+          <input type="hidden" name="medicine_id" value="{{ medicine.id }}">
+          <button type="submit" class="btn">Buy</button>
+        </form>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
+

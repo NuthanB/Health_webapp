@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block title %}
+ Confirmed
+{% endblock %}
+{% block main %}
+<h1> Booking confirmed</h1>
+<h3>details-</h3>
+<p>Appointment Date: {{ most_recent_appointment.appointment_date }}</p>
+        <p>Appointment Time: {{ most_recent_appointment.appointment_time }}</p>
+        <p>Doctor Name: {{ most_recent_appointment.doctor.name }}</p>
+        <p>Doctor Speciality: {{ most_recent_appointment.doctor.speciality }}</p>
+
+{% endblock %}

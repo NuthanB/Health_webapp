@@ -1,0 +1,132 @@
+{% extends "layout.html" %}
+{% block title %}
+Home
+{% endblock %}
+{% block main %}
+<style>
+    /* body{
+      background-color: #e3fafa;
+    } */
+     a {
+        color: black;
+        text-decoration: none;
+      }
+    .btn{
+      background-color:#9ccaca;
+      border-radius: 6px;
+      padding:10px;
+    
+     }
+     .card{
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 3px;
+      width: 270px;
+      margin:30px;
+      padding: 10px;
+      }
+      .down{
+        align-self: center;
+        margin-top: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+     }
+
+      
+      .one{
+        color: #1678F2;
+        align-items: center;
+        font-family: Satoshi;
+        font-size: 37px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 39px;
+      }
+      .two{
+        color: #2e2d2d;
+        font-family: Satoshi;
+        font-size: 37px;
+        text-align: center;
+        font-weight: 700;
+        line-height: 39px;
+
+      }
+      .left{
+        width: 50%;
+        margin-right: 60px;
+      }
+  
+      .up{
+        display: flex;
+        align-items: center;
+        background-color: #b7eeee;
+        margin-bottom: 30px;
+        justify-content: center;
+        margin-right: 10px;
+        padding-right: 20px;
+      }
+
+      
+      .tot{
+        align-items: center;
+        padding-left: 30px;
+
+      }
+      
+  </style>
+<div class="tot">
+  <div class="up">
+    <div class="left">
+      <img src="static/styles/doc.png">
+
+    </div>
+    <div class="right">
+      <div class="col">
+        <p class="one" >One Step Solution</p>
+        <p class="two">To All Your Health Needs</p>
+    </div>
+      
+    </div>
+      
+  </div>
+
+  <div class="down">
+   <div class="row">
+
+    <div class="card">
+        <h4 class="card-title">Book an Appointment</h4>
+        <p class="card-text">Book an appointment at anytime for any reason </p>
+        <a href="/appointment" class="btn">See more</a>
+    </div>
+
+    <div class="card">
+      <h4 class="card-title">Medicines</h4>
+      <p class="card-text">Order medicines to be delivered in an hour</p>
+       <a href="/medicine" class="btn">See more</a>
+    </div>
+
+    <div class="card">
+       <h4 class="card-title">Lab Test</h4>
+       <p class="card-text">Book an appointment for any lab test needed</p>
+       <a href="/labs" class="btn">See more</a>
+   </div>
+
+ </div>
+ <div class="row">
+
+   <div class="card">
+       <h4 class="card-title">Records</h4>
+       <p class="card-text">Access all your records in one place</p>
+       <a href="/documents" class="btn">See more</a>
+    </div>
+    <div class="card">
+       <h4 class="card-title">Sleep Assistance</h4>
+       <p class="card-text">Listen to a story to help you fall asleep</p>
+       <a href="/adults" class="btn">See more</a>
+    </div>
+   
+   </div>
+  </div>
+</div>
+{% endblock %}

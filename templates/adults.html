@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+{% block title %}
+Adult Sleep Assitance 
+{% endblock %}
+
+{% block main %}
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/kids.css') }}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function getadultsStory() {
+            const prompt = $('#prompt').val();
+            if (!prompt) return;
+
+            $.ajax({
+                type: 'POST',
+                url: '/get_kids_story',
+                data: { prompt: prompt },
+                success: function(response) {
+    $('#adults-story').text(response.assistant_message);
+
+    // Update the audio element's src attribute
+    const audioElement = document.getElementById("adults-audio");
+    audioElement.src = response.audio_url;
+
+    // Play the audio
+    audioElement.play();
+
+},
+    
+                error: function() {
+                    $('#adults-story').text('An error occurred.');
+                }
+            });
+        }
+        
+    </script>
+    <style>
+       .btn{
+            width: fit-content;
+            height: 40px;
+            background: #75a9d3;
+            color:white;
+            font-size: 1em;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            position: relative;
+            }
+        .btn1{
+            width: fit-content;
+            height: 40px;
+            background: #75a9d3;
+            border:none;
+            outline:none;
+            border-radius: 6px;
+            color:white;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            padding:5px;
+
+        }
+
+        .container {
+        background-image: url('https://wallpaper.dog/large/996616.jpg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover; 
+          }
+     
+    </style>
+    
+    <div class="container">
+    <div class="left">
+    <h1 style="color: #75a9d3">Storyteller</h1>
+    <form>
+        <label for="prompt" ><h3 style="color: #75a9d3">Enter a prompt<h3> </label><br>
+        <textarea id="prompt" name="prompt" rows="4" cols="50" required></textarea><br>
+        <br>
+        <button type="button"  class='btn1' onclick="getadultsStory()">Generate a Story</button>
+    </form>
+    <br>
+    <div id="adults-story"></div>
+    <br>
+    <br>
+    <audio id="adults-audio" controls>
+        <source src="" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+</div>
+<div class="right">
+   <!-- <img src="/static/styles/adult1.jpg" height="500px" width="500px">-->
+</div>
+<body>
+    
+
+</body>
+</div>
+<div class="one">
+    <br>
+  <a href="/kids" class="btn">Kids Mode</a>
+  <br>
+
+</div>
+<br>
+
+{% endblock %}

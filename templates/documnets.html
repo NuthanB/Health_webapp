@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block title %}
+My Documents
+{% endblock %}
+
+{% block main %}
+
+    <h1>My Documents</h1>
+    <ul>
+        {% for document in user.documents %}
+            <li>
+                <strong>{{ document.title }}</strong><br>
+                {{ document.description }}<br>
+                <a href="{{ document.file_path }}">Download</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="/upload_document">Upload New Document</a>
+{% endblock %}
