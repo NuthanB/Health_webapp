@@ -31,6 +31,8 @@ This project implements a healthcare assistant that allows users to interact wit
 -HTML, CSS, JavaScript
 -Bootstrap (optional)
 
+Note: The API for Story teller is from CHATGPTAI , one should make use of their own API as sharing API key is not good code practice 
+
 ## Contributing 
 are welcome! If you find a bug or want to add a new feature, please follow these steps:
 Fork the repository.
