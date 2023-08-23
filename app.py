@@ -230,14 +230,15 @@ def submit():
                 elif int(x[:2])>31:
                     bot_response='Please enter correct date in DDMMYYY format'
                     convers.pop()
-                elif int(x[2:4])<8:
-                    bot_response='Cannot book for a date in the past, please enter correct date in DDMMYYY format'
+                elif int(x[2:4])<8 or int(x[2:4])>12:
+                    bot_response='Please enter correct date in DDMMYYY format'
                     convers.pop()
                 else:
                      bot_response = "Booking date confirmed on"+x[0:2]+"-"+x[2:4]+"-"+x[4:]+" , Please enter time in HHMM format"
-                print(d)
+                     convers.append("time")  
+                print(convers)
                 conversation.append(('bot', bot_response)) 
-                convers.append("time")  
+                 
                 
             elif convers[len(convers)-2] =='time' and len(convers[-1])==4 and convers[-1].isdigit():
                 x=convers[-1]
@@ -322,13 +323,15 @@ def submit():
                 elif int(x[:2])>31:
                     bot_response='Please enter correct date in DDMMYYY format'
                     convers.pop()
-                elif int(x[2:4])<8:
-                    bot_response='Cannot book for a date in the past, please enter correct date in DDMMYYY format'
+                elif int(x[2:4])<8 or int(x[2:4])>12 :
+                    bot_response='Please enter correct date in DDMMYYY format'
                     convers.pop()
                 else:
                      bot_response = "Booking date confirmed on"+x[0:2]+"-"+x[2:4]+"-"+x[4:]+" , Please enter time in HHMM format"
+                     convers.append("time")  
+                print(convers)
                 conversation.append(('bot', bot_response)) 
-                convers.append("time")  
+                
                 
           elif convers[len(convers)-2] =='time' and len(convers[-1])==4 and convers[-1].isdigit():
                 x=convers[-1]
@@ -355,6 +358,7 @@ def submit():
                 conversation.append(('bot',bot_response))
                 bot_response="enter valid input"
                 convers.pop()
+                print(convers)
                
        
               
