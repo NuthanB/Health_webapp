@@ -7,8 +7,6 @@ from flask import Flask, flash, redirect, render_template, request, session
 from tempfile import mkdtemp
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
-from werkzeug.security import check_password_hash, generate_password_hash
 from functools import wraps
 from werkzeug.utils import secure_filename
 from flask import Flask, render_template, request, jsonify , send_file
@@ -121,6 +119,7 @@ conversation = []
 convers = []
 
 
+
 app.config.from_pyfile('.env')
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -138,6 +137,7 @@ def index():
    return render_template("index.html")  
 
 @app.route('/profile')
+@login_required
 def profile():
     user_id = session.get('user_id')
     if user_id is None:
@@ -173,6 +173,7 @@ def assitance():
 @app.route('/clear')
 def clear():
     conversation.clear()
+    convers.clear()
     return redirect('/assitance')
 
 
@@ -181,14 +182,17 @@ def clear():
 def submit():
    user_input = request.form['user_input']
    conversation.append(('user', user_input))
-   if  user_input in ['1' ,'2','3']:
-       user_input = int(user_input)
-       if user_input == 1:
-         if len(conversation)>2:
-            bot_response = "You have opted for Blood test , enter the date in DD-MM-YYYY format"
-            conversation.append(('bot', bot_response)) 
-         else:
-            bot_response = "Welcome to book your lab test. The different types of tests we offer are: enter the number corresponding-"
+   convers.append(user_input)
+   user_id = session.get('user_id')
+   
+   
+   time = ""
+   print(convers)
+   bot_response=''
+   
+   if  convers[0]=="1" or convers[0]=='2' or convers[0]=='3' :
+     
+       if convers[0] == '1':
             lab_tests = LabTest.query.with_entities(LabTest.testname).all()
             k=1
             tests=[]
@@ -199,38 +203,206 @@ def submit():
             print(tests)
             string=''
             for t in tests:
-                string+=str(t[0])+". "+t[1]+"\n"
+                string+=str(t[0])+". "+t[1]+" "
             lab_tests_list =string
             print(lab)
-            bot_response += lab_tests_list
-            print(conversation)
-            conversation.append(('bot', bot_response))   
-            print(conversation)
+            d=''
+            t=0
+          
+            if len(convers)==1:
+                bot_response = "Welcome to book your lab test. The different types of tests we offer are: enter the number corresponding = "
+                bot_response += lab_tests_list
+                conversation.append(('bot', bot_response))   
+               
+            elif len(convers)==2:    
+                
+                booked=tests[int(convers[1])-1][1]
+                t = tests[int(convers[1])-1][0]
+                bot_response="You have booked "+booked+" please enter date in DDMMYYY format"
+                convers.append('date')
+                conversation.append(('bot', bot_response))  
+                
+            elif convers[len(convers)-2] =='date' and len(convers[-1])==8 and convers[-1].isdigit():
+                x=convers[-1]
+                if x[4:]!='2023':
+                    bot_response='booking available only for this year, please enter correct date in DDMMYYY format'
+                    convers.pop()
+                elif int(x[:2])>31:
+                    bot_response='Please enter correct date in DDMMYYY format'
+                    convers.pop()
+                elif int(x[2:4])<8:
+                    bot_response='Cannot book for a date in the past, please enter correct date in DDMMYYY format'
+                    convers.pop()
+                else:
+                     bot_response = "Booking date confirmed on"+x[0:2]+"-"+x[2:4]+"-"+x[4:]+" , Please enter time in HHMM format"
+                print(d)
+                conversation.append(('bot', bot_response)) 
+                convers.append("time")  
+                
+            elif convers[len(convers)-2] =='time' and len(convers[-1])==4 and convers[-1].isdigit():
+                x=convers[-1]
+                hrs=int(x[:2])
+                if hrs>=9 and hrs<=19:
+                    bot_response ='Booking confirmed for '+ x[:2]+':'+x[2:] +' hours.'
+                    time = x[:2]+':'+x[2:]
+                    print(time)
+                else:
+                    bot_response+='Time unavailable. Please enter time again in HHMM format. '
+                    convers.pop()
+                x=convers[3]
+                d = x[0:2]+"-"+x[2:4]+"-"+x[4:]
+                new_lab_history = LabHistory(patient_id=user_id, labtest_id=tests[int(convers[1])-1][0], booking_date=d, time=time)
+                db.session.add(new_lab_history)
+                db.session.commit()
+                bot_response+="Please clear conversation to coninue"
+                print(bot_response)
+                conversation.append(('bot',bot_response))
+                print(convers)
+                
+            else:
+                conversation.append(('bot',bot_response))
+                bot_response="enter valid input"
+                convers.pop()
+             
             
-       if user_input == 2:
-          bot_response = "Welcome to book your Appointment with the doctors . The different types of speclist we have are: endter the numbers-\n"
+       if convers[0] == '2':
+         
           unique_specialties = db.session.query(Doctor.speciality).distinct().all()
-          specialties_list = [specialty[0] for specialty in unique_specialties]
-          doctors_list = ", ".join(specialties_list)
-          print(doctors_list)
-          bot_response += doctors_list
-          conversation.append(('bot', bot_response))
-       if user_input == 3:
-           bot_response = "Welcome to buy your medicine , Press 1 for Private Medincine , Press 2 for Government medication"
-           conversation.append(('bot', bot_response))   
-       if user_input==11:
-           bot_response = "You have opted for Blood test , enter the date in DDMMYYYY format"
-           conversation.append(('bot', bot_response))   
-      
+          #specialties_list = [specialty[0] for specialty in unique_specialties]
+          #doctors_list = ", ".join(specialties_list)
+         # print(doctors_list)
+          k=1
+          dlist=[]
+          #lab_test_names = [k,test[0] for test in lab_tests]
+          for test in unique_specialties:
+             dlist.append([k,test[0]])
+             k+=1
+          print(dlist)
+          string=''
+          for t in dlist:
+                string+=str(t[0])+". "+t[1]+"\n "
+          doctor_list =string
+          docs=[]
+          if len(convers)>1:
+              print(dlist[int(convers[1])][1])
+              doc = Doctor.query.filter_by(speciality=dlist[int(convers[1])-1][1]).all()
+              k=1
+              docs=[]
+              for i in doc:
+                  docs.append([k,i.id,i.name,i.cost])
+                  k+=1
+              print(docs)
+
+          if len(convers)==1:  
+            bot_response = "Welcome to book your Appointment with the doctors . The different types of speclist we have are: enter the numbers= \n"
+            bot_response += doctor_list
+            conversation.append(('bot', bot_response))
+
+          elif len(convers)==2:
+              bot_response="Select the doctor you want to book the appointment with by entering the number= "
+              string=''
+              for i in docs:
+                  string+=str(i[0])+". "+ i[2]+", cost= "+str(i[3])+"$.  "
+              print(string)
+              bot_response+=string
+              conversation.append(('bot', bot_response))
+              
+          elif len(convers)==3:
+             booked=docs[int(convers[2])-1][2]
+             print(booked)
+             bot_response="You have booked "+booked+"for the cost- "+str(docs[int(convers[2])-1][3])+"$ . Please enter date in DDMMYYY format. "
+             convers.append('date')
+             conversation.append(('bot', bot_response))
+
+          elif convers[len(convers)-2] =='date' and len(convers[-1])==8 and convers[-1].isdigit():
+                x=convers[-1]
+                if x[4:]!='2023':
+                    bot_response='booking available only for this year, please enter correct date in DDMMYYY format'
+                    convers.pop()
+                elif int(x[:2])>31:
+                    bot_response='Please enter correct date in DDMMYYY format'
+                    convers.pop()
+                elif int(x[2:4])<8:
+                    bot_response='Cannot book for a date in the past, please enter correct date in DDMMYYY format'
+                    convers.pop()
+                else:
+                     bot_response = "Booking date confirmed on"+x[0:2]+"-"+x[2:4]+"-"+x[4:]+" , Please enter time in HHMM format"
+                conversation.append(('bot', bot_response)) 
+                convers.append("time")  
+                
+          elif convers[len(convers)-2] =='time' and len(convers[-1])==4 and convers[-1].isdigit():
+                x=convers[-1]
+                hrs=int(x[:2])
+                print(hrs)
+                if hrs>=9 and hrs<=19:
+                    bot_response='Booking confirmed for'+ x[:2]+':'+x[2:] +'hours. '
+                else:
+                    bot_response='Time unavailable. Please enter time again in HHMM format'
+                    convers.pop()
+                id=docs[int(convers[2])-1][1]
+                xd=convers[4]
+                d=xd[0:2]+"-"+xd[2:4]+"-"+xd[4:]
+                print(id,xd,x,d)
+                new_appointment = Appointment(patient_id=user_id, doctor_id=id,
+                                      appointment_date=d, appointment_time= x[:2]+':'+x[2:])
+                db.session.add(new_appointment)
+                db.session.commit()
+                bot_response+="Please clear this conversation to continue"
+                conversation.append(('bot',bot_response))
+                print(convers)
+                
+          else:
+                conversation.append(('bot',bot_response))
+                bot_response="enter valid input"
+                convers.pop()
+               
+       
+              
+       if convers[0] == '3':
+           
+           med=[]
+           if len(convers)>1:
+                dic={1:'Private', 2:'Government'}
+                meds = Medicine.query.filter_by(type=dic[int(convers[1])]).all() 
+                print(meds)
+                k=1
+                for i in meds:
+                  med.append([k,i.id,i.name,i.price])
+                  k+=1
+                print(med)
+           if len(convers)==1:
+                bot_response = "Welcome to buy your medicine , Press 1 for Private Medicine , Press 2 for Government medication"
+                conversation.append(('bot', bot_response))  
+           elif len(convers)==2:
+              bot_response="Select the medicine you want to book by entering the number= "
+              string=''
+              for i in med:
+                  string+=str(i[0])+". "+ i[2]+", cost= "+str(i[3])+"$.  "
+              print(string)
+              bot_response+=string
+              conversation.append(('bot', bot_response))
+             
+           elif len(convers)==3:
+             booked=med[int(convers[2])-1][2]
+             print(booked)
+             bot_response="You have booked "+booked+"for the cost- "+str(med[int(convers[2])-1][3])+"$. "
+             bot_response+="Please clear this conversation to continue"
+             id=med[int(convers[2])-1][1]
+             print(id)
+             new_appointment = MedicineHistory(patient_id=user_id, medicine_id=id,purchase_date=datetime.now())
+             db.session.add(new_appointment)
+             db.session.commit()
+             conversation.append(('bot', bot_response))          
+                
+           else:
+                conversation.append(('bot',bot_response))
+                bot_response="enter valid input"
+                convers.pop()
+               
 
    else:
-       if user_input=='21082023':
-           bot_response = "booking date confirmed on 21-08-2023 , Please enter time in hours"
-           conversation.append(('bot', bot_response))   
-       elif user_input=='16 30':
-          bot_response='booking confirmed for 16.30 hours'
-          conversation.append(('bot',bot_response))
-       else:
+      
+         convers.pop()
          bot_response = "please enter valid response" 
          conversation.append(('bot', bot_response)) 
 
